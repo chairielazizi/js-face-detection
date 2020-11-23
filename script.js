@@ -23,11 +23,18 @@ video.addEventListener('play', () => {
         const detections = await faceapi.detectAllFaces(video,new faceapi.TinyFaceDetectorOptions()).withFaceLandmarks().withFaceExpressions()
         console.log(detections)
         const resized = faceapi.resizeResults(detections,displaySize)
+        // clear the rectangle each time new value comes up
+        canvas.getContext('2d').clearRect(0,0,canvas.width,canvas.height)
         faceapi.draw.drawDetections(canvas, resized)
+        //draw more details to the face
+        faceapi.draw.drawFaceLandmarks(canvas, resized)
+        // display the specific expressions
+        faceapi.draw.drawFaceExpressions(canvas, resized)
     }, 100)
 
     //canvas
     const canvas = faceapi.createCanvasFromMedia(video)
     document.body.append(canvas)
     const displaySize = {width: video.width, height: video.height}
+    faceapi.matchDimensions(canvas, displaySize) // position the canvas more properly
 })
