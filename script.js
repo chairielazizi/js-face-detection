@@ -22,5 +22,12 @@ video.addEventListener('play', () => {
     setInterval(async () =>{
         const detections = await faceapi.detectAllFaces(video,new faceapi.TinyFaceDetectorOptions()).withFaceLandmarks().withFaceExpressions()
         console.log(detections)
+        const resized = faceapi.resizeResults(detections,displaySize)
+        faceapi.draw.drawDetections(canvas, resized)
     }, 100)
+
+    //canvas
+    const canvas = faceapi.createCanvasFromMedia(video)
+    document.body.append(canvas)
+    const displaySize = {width: video.width, height: video.height}
 })
